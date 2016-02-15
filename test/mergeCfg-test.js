@@ -5,6 +5,7 @@ describe('mergeCfg', () => {
   it('merge with query', done => {
     const query = {
       scheme: 'http://m.alipay.com',
+      verbose: true,
     };
     expect(mergeCfg(query)).toEqual({
       prefix: 'antm',
@@ -22,6 +23,7 @@ describe('mergeCfg', () => {
   it('merge with query and global simOpts', done => {
     const query = {
       scheme: 'http://m.alipay.com',
+      verbose: true,
     };
     const simOpts = {
       device: 'iPhone-5s',

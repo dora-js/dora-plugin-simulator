@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "co": "^4.6.0",
-    "node-isimulator": "~0.1.6"
+    "node-isimulator": "~0.1.7"
   },
   "devDependencies": {
     "babel-cli": "~6.2.0",
