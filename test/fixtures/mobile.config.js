@@ -1,0 +1,1 @@
+var simOpts = { scheme: 'http://m.baidu.com' }; module.exports.simOpts = simOpts;
