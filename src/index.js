@@ -1,3 +1,4 @@
+import { type } from 'os';
 import Simulator from 'node-isimulator';
 import co from 'co';
 import EventEmitter from 'events';
@@ -10,17 +11,23 @@ let simOpts = {};
 let sim = {};
 
 eventEmitter.on('initializationSimOpts', () => {
-  sim = new Simulator(lastOpts);
-  co(sim.start(lastOpts.scheme));
+  if (type() === 'Darwin') {
+    sim = new Simulator(lastOpts);
+    co(sim.start(lastOpts.scheme));
+  }
 });
 
 eventEmitter.on('changeSimOptsNeedReopen', () => {
-  co(sim.killAll());
-  eventEmitter.emit('initializationSimOpts');
+  if (type() === 'Darwin') {
+    co(sim.killAll());
+    eventEmitter.emit('initializationSimOpts');
+  }
 });
 
 eventEmitter.on('changeSimOptsDoNotNeedReopen', () => {
-  co(sim.start(lastOpts.scheme));
+  if (type() === 'Darwin') {
+    co(sim.start(lastOpts.scheme));
+  }
 });
 
 export default {
