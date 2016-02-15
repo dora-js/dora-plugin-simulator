@@ -20,8 +20,8 @@ eventEmitter.on('initializationSimOpts', () => {
 eventEmitter.on('changeSimOptsNeedReopen', () => {
   if (type() === 'Darwin') {
     co(sim.killAll());
-    eventEmitter.emit('initializationSimOpts');
   }
+  eventEmitter.emit('initializationSimOpts');
 });
 
 eventEmitter.on('changeSimOptsDoNotNeedReopen', () => {
