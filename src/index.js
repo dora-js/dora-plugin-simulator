@@ -26,14 +26,16 @@ eventEmitter.on('changeSimOptsDoNotNeedReopen', () => {
 export default {
   'server.before'() {
     const { query, get, set } = this;
-    console.log('0. ', query);
-    simOpts = get('_global_simOpts');
-    const configManagerEmitter = get('configManagerEmitter');
     set('simulatorEmitter', eventEmitter);
-
+    simOpts = get('_global_simOpts') || {};
     lastOpts = mergeCfg(query, simOpts);
 
     eventEmitter.emit('initializationSimOpts');
+
+    const configManagerEmitter = get('configManagerEmitter');
+    if (!configManagerEmitter) {
+      return;
+    }
 
     configManagerEmitter.on('_global_simOpts', () => {
       simOpts = get('_global_simOpts');
