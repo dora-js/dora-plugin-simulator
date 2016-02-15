@@ -6,8 +6,8 @@ function mergeCfg(query, globalSimOpts) {
     os: '9.2',
     appPath: '',
     downloadURL: '',
-    scheme: '',
-    verbose: true,
+    scheme: 'http://127.0.0.1',
+    verbose: false,
   };
   const finalOpts = { ...options, ...query, ...globalSimOpts };
 
