@@ -26,6 +26,7 @@ eventEmitter.on('changeSimOptsNeedReopen', () => {
 
 eventEmitter.on('changeSimOptsDoNotNeedReopen', () => {
   if (type() === 'Darwin') {
+    sim.scheme = lastOpts.scheme;
     co(sim.start(lastOpts.scheme));
   }
 });
