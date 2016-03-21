@@ -15,7 +15,7 @@ provide a convenient solution for Mac users to open pages which served by the se
 
 ```bash
 $ npm i dora dora-plugin-simulator -SD
-$ ./node_modules/.bin/dora --plugins simulator?{scheme:http://m.alipay.com}
+$ ./node_modules/.bin/dora --plugins 'simulator?scheme=http://m.alipay.com'
 ```
 
 **Build In**
