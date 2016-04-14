@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.4
+
+fix: npmjs bad layout
+
 ## 0.1.3
 
 modify: not specify os by default
