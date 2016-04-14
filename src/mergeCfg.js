@@ -3,7 +3,7 @@ function mergeCfg(query, globalSimOpts) {
     prefix: 'antm',
     application: 'mobilesafari',
     device: 'iPhone-6',
-    os: '9.2',
+    os: '',
     appPath: '',
     downloadURL: '',
     scheme: 'http://127.0.0.1',

@@ -7,10 +7,6 @@
 
 provide a convenient solution for Mac users to open pages which served by the server in iOS simulator ----- 桥接 iOS 模拟器。
 
----
-
-
-
 ## Usage_1
 
 ```bash
@@ -24,7 +20,7 @@ $ ./node_modules/.bin/dora --plugins 'simulator?scheme=http://m.alipay.com'
   prefix: 'antm',
   application: 'mobilesafari',
   device: 'iPhone-6',
-  os: '9.2',
+  os: '',
   appPath: '',
   downloadURL: '',
   scheme: 'http://127.0.0.1',
