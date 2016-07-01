@@ -1,13 +1,12 @@
 function mergeCfg(query, globalSimOpts) {
   const options = {
-    prefix: 'antm',
     application: 'mobilesafari',
-    device: 'iPhone-6',
-    os: '',
-    appPath: '',
+    bundleId: '',
+    device: 'iPhone 6',
     downloadURL: '',
+    prefix: 'antm',
     scheme: 'http://127.0.0.1',
-    verbose: false,
+    sdk: '',
   };
   const finalOpts = { ...options, ...query, ...globalSimOpts };
 

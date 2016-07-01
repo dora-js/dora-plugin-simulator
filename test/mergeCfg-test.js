@@ -1,21 +1,19 @@
 import mergeCfg from '../src/mergeCfg';
-import expect from 'expect';
+import expect from 'expect.js';
 
 describe('mergeCfg', () => {
   it('merge with query', done => {
     const query = {
       scheme: 'http://m.alipay.com',
-      verbose: true,
     };
-    expect(mergeCfg(query)).toEqual({
-      prefix: 'antm',
+    expect(mergeCfg(query)).to.eql({
       application: 'mobilesafari',
-      device: 'iPhone-6',
-      os: '',
-      appPath: '',
+      bundleId: '',
+      device: 'iPhone 6',
       downloadURL: '',
+      prefix: 'antm',
       scheme: 'http://m.alipay.com',
-      verbose: true,
+      sdk: '',
     });
     done();
   });
@@ -23,20 +21,20 @@ describe('mergeCfg', () => {
   it('merge with query and global simOpts', done => {
     const query = {
       scheme: 'http://m.alipay.com',
-      verbose: true,
     };
     const simOpts = {
-      device: 'iPhone-5s',
+      device: 'iPhone 5s',
       scheme: 'http://oo.xx.com',
+      verbose: true,
     };
-    expect(mergeCfg(query, simOpts)).toEqual({
-      prefix: 'antm',
+    expect(mergeCfg(query, simOpts)).to.eql({
       application: 'mobilesafari',
-      device: 'iPhone-5s',
-      os: '',
-      appPath: '',
+      bundleId: '',
+      device: 'iPhone 5s',
       downloadURL: '',
+      prefix: 'antm',
       scheme: 'http://oo.xx.com',
+      sdk: '',
       verbose: true,
     });
     done();

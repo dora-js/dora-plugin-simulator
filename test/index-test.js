@@ -1,77 +1,88 @@
 import { join } from 'path';
 import { writeFileSync } from 'fs';
-
-import sinon from 'sinon';
-import expect from 'expect';
+import expect from 'expect.js';
 import dora from 'dora';
+import { simUtil } from 'node-isimulator';
 
 const oldCwd = process.cwd();
 const fixtures = join(oldCwd, 'test/fixtures');
-let simulatorEmitter = {};
-const spyInitial = sinon.spy();
-const spyReOpen = sinon.spy();
-const spyJustOpen = sinon.spy();
 
-describe('index', function sim() {
-  this.timeout(25000);
-  before(done => {
-    process.chdir(fixtures);
-    dora({
-      port: 12346,
-      plugins: [
-        'config-manager?path=./mobile.config.js|simOpts',
-        '../../src/index?{scheme:"http://127.0.0.1:12345"}',
-        {
-          'server.after': function after() {
-            const { get } = this;
-            simulatorEmitter = get('simulatorEmitter');
-            simulatorEmitter.on('initializationSimOpts', spyInitial);
-            simulatorEmitter.on('changeSimOptsNeedReopen', spyReOpen);
-            simulatorEmitter.on('changeSimOptsDoNotNeedReopen', spyJustOpen);
-          },
-        },
-      ],
-      cwd: fixtures,
-      verbose: true,
-    });
-    setTimeout(done, 15000);
+describe('index', () => {
+  const simOpts = {
+    sdk: '',
+    udid: '',
+  };
+  before(async done => {
+    try {
+      simOpts.sdk = await simUtil.getLatestSDK();
+      process.chdir(fixtures);
+      dora({
+        port: 12346,
+        plugins: [
+          'config-manager?path=./mobile.config.js|simOpts',
+          '../../src/index',
+        ],
+        cwd: fixtures,
+        verbose: true,
+      }, done);
+    } catch (e) {
+      done(e);
+    }
   });
 
-  after(done => {
-    writeFileSync(
-      join(fixtures, './mobile.config.js'),
-      `var simOpts = { scheme: 'http://m.baidu.com' }; module.exports.simOpts = simOpts;`,
-      'utf-8'
-    );
-    process.chdir(oldCwd);
-    done();
-  });
-
-  it('changeSimOptsDoNotNeedReopen should called', done => {
-    writeFileSync(
-      join(fixtures, './mobile.config.js'),
-      `var simOpts = { scheme: 'http://m.taobao.com' }; module.exports.simOpts = simOpts;`,
-      'utf-8'
-    );
-
-    setTimeout(() => {
-      expect(spyReOpen.called).toEqual(false);
-      expect(spyJustOpen.called).toEqual(true);
+  afterEach(async done => {
+    try {
+      await simUtil.killAllSimulators();
+      await simUtil.deleteDevice(simOpts.udid);
+      simOpts.udid = '';
+      if (simOpts.rewrite) {
+        writeFileSync(
+          join(fixtures, './mobile.config.js'),
+          "var simOpts = { prefix:'doraPlugin', scheme: 'http://m.baidu.com' }; " +
+          'module.exports.simOpts = simOpts;',
+          'utf-8'
+        );
+        simOpts.rewrite = false;
+      }
       done();
-    }, 10000);
+    } catch (e) {
+      done(e);
+    }
   });
 
-  it('changeSimOptsNeedReopen should called', done => {
-    writeFileSync(
-      join(fixtures, './mobile.config.js'),
-      `var simOpts = { device: 'iPhone-5s', scheme: 'https://www.npmjs.com/package/dora-plugin-simulator' }; module.exports.simOpts = simOpts;`,
-      'utf-8'
-    );
-
-    setTimeout(() => {
-      expect(spyReOpen.called).toEqual(true);
-      expect(spyInitial.called).toEqual(true);
+  it('should create a simulator named doraPluginSim--iPhone-6--${latestsdk}', async done => {
+    try {
+      const normalizeSDK = simOpts.sdk.replace(/\./, '-');
+      const simName = `doraPluginsim--iPhone-6--${normalizeSDK}`;
+      const sim = await simUtil.getUdidBySimName(simName);
+      expect(sim).to.not.be.empty();
+      simOpts.udid = sim[0];
       done();
-    }, 15000);
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  it('change mobile.config.js should create doraPluginSim--iPhone-5s--${latestsdk}', done => {
+    try {
+      writeFileSync(
+        join(fixtures, './mobile.config.js'),
+        "var simOpts = { prefix:'doraPlugin', device: 'iPhone 5s' }; " +
+        'module.exports.simOpts = simOpts;',
+        'utf-8'
+      );
+      setTimeout(async () => {
+        const normalizeSDK = simOpts.sdk.replace(/\./, '-');
+        const simName = `doraPluginsim--iPhone-5s--${normalizeSDK}`;
+        const sim = await simUtil.getUdidBySimName(simName);
+        console.log(sim)
+        expect(sim).to.not.be.empty();
+        simOpts.udid = sim[0];
+        simOpts.rewrite = true;
+        done();
+      }, 2000);
+    } catch (e) {
+      done(e);
+    }
   });
 });

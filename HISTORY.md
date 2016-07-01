@@ -2,6 +2,11 @@
 
 ---
 
+## 0.2.0
+
+upgrade: node-isimulator to 1.0.x
+brand new style
+
 ## 0.1.4
 
 fix: npmjs bad layout
