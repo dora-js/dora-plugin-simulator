@@ -1,1 +1,1 @@
-var simOpts = { scheme: 'http://m.baidu.com' }; module.exports.simOpts = simOpts;
+var simOpts = { prefix:'doraPlugin', scheme: 'http://m.baidu.com' }; module.exports.simOpts = simOpts;
