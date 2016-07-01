@@ -16,15 +16,16 @@ $ ./node_modules/.bin/dora --plugins 'simulator?scheme=http://m.alipay.com'
 
 **Build In**
 
+more about the option, visit [node-isimulator](https://github.com/pigcan/node-isimulator)
+
 ```javascript
-  prefix: 'antm',
   application: 'mobilesafari',
-  device: 'iPhone-6',
-  os: '',
-  appPath: '',
+  bundleId: '',
+  device: 'iPhone 6',
   downloadURL: '',
+  prefix: 'antm',
   scheme: 'http://127.0.0.1',
-  verbose: false
+  sdk: ''
 ```
 
 ## Usage_2 (Recomend) with [dora-plugin-config-manager](https://www.npmjs.com/package/dora-plugin-config-manager)
