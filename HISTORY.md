@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.1
+
+fix npm2 babel-runtime issue
+
 ## 0.2.0
 
 upgrade: node-isimulator to 1.0.x
